@@ -17,7 +17,7 @@ class MusicMemory extends HTMLElement {
     let buttons = [];
 
     this.querySelectorAll('audio').forEach((audio, index) => {
-      this.audioElements.push(audio); // Add to audio elements array
+      this.audioElements.push(audio);
       ['range1', 'range2'].forEach(rangeKey => {
         const button = document.createElement('button');
         button.textContent = `Play Part ${rangeKey === 'range1' ? '1' : '2'} of Audio ${index + 1}`;
@@ -43,8 +43,8 @@ class MusicMemory extends HTMLElement {
   }
 
   handlePlay(audio, rangeData, button) {
-    this.stopAllAudios(); // Stop all other audios
-    this.clearActiveTimeout(); // Clear any active timeout
+    this.stopAllAudios();
+    this.clearActiveTimeout();
 
     // This handles the case where the user clicks a button after two were already clicked but didn't reset
     if (this.currentButtons.length === 2 && !this.currentButtons.every(btn => btn.classList.contains('matched'))) {
