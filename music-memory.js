@@ -5,8 +5,8 @@ class MusicMemory extends HTMLElement {
     this.selectedRanges = [];
     this.currentButtons = [];
     this.noShuffle = this.hasAttribute('no-shuffle') || false;
-
-    console.log(this.noShuffle);
+    this.audioElements = [];
+    this.activeTimeout = null;
   }
 
   connectedCallback() {
@@ -17,6 +17,7 @@ class MusicMemory extends HTMLElement {
     let buttons = [];
 
     this.querySelectorAll('audio').forEach((audio, index) => {
+      this.audioElements.push(audio); // Add to audio elements array
       ['range1', 'range2'].forEach(rangeKey => {
         const button = document.createElement('button');
         button.textContent = `Play Part ${rangeKey === 'range1' ? '1' : '2'} of Audio ${index + 1}`;
@@ -42,37 +43,40 @@ class MusicMemory extends HTMLElement {
   }
 
   handlePlay(audio, rangeData, button) {
+    this.stopAllAudios(); // Stop all other audios
+    this.clearActiveTimeout(); // Clear any active timeout
+
+    // This handles the case where the user clicks a button after two were already clicked but didn't reset
+    if (this.currentButtons.length === 2 && !this.currentButtons.every(btn => btn.classList.contains('matched'))) {
+      this.currentButtons.forEach(btn => {
+        btn.disabled = false;
+      });
+      this.currentButtons = [];
+    }
+
     this.currentButtons.push(button);
+
     button.disabled = true;
     if (this.checkForMatch(audio)) {
-      this.currentButtons.forEach(button => {
-        button.classList.add('matched');
-      });
+      this.currentButtons.forEach(button => button.classList.add('matched'));
       this.currentButtons = [];
       return;
     };
 
     const [start, end] = this.parseRange(rangeData);
-
-    // Set the audio to the start of the range and play
-    audio.currentTime = start / 1000;
+    audio.currentTime = 0; // Reset audio to start
+    audio.currentTime = start / 1000; // Set to the start of the range
     audio.play();
 
-    // Pause the audio at the end of the range
     const playDuration = (end - start) / 1000;
-    setTimeout(() => {
+    this.activeTimeout = setTimeout(() => {
       audio.pause();
       audio.currentTime = 0; // Reset to start for next play
       if (this.currentButtons.length === 2) {
-        console.log('Resetting buttons');
-        this.currentButtons.forEach(button => {
-          button.disabled = false;
-        });
+        this.currentButtons.forEach(button => button.disabled = false);
         this.currentButtons = [];
       }
     }, playDuration * 1000);
-
-
   }
 
   parseRange(rangeData) {
@@ -81,8 +85,6 @@ class MusicMemory extends HTMLElement {
 
   checkForMatch(selectedAudio) {
     this.selectedRanges.push(selectedAudio);
-    console.log(this.selectedRanges)
-
     if (this.selectedRanges.length === 2) {
       if (this.selectedRanges[0].src === this.selectedRanges[1].src) {
         this.playFullAudio(this.selectedRanges[0]);
@@ -106,6 +108,17 @@ class MusicMemory extends HTMLElement {
       audio.currentTime = 0; // Reset to start for next play
     }, end);
 
+  }
+
+  stopAllAudios() {
+    this.audioElements.forEach(audio => audio.pause());
+  }
+
+  clearActiveTimeout() {
+    if (this.activeTimeout) {
+      clearTimeout(this.activeTimeout);
+      this.activeTimeout = null;
+    }
   }
 }
 
