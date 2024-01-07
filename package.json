@@ -1,0 +1,33 @@
+{
+  "name": "music-memory",
+  "version": "1.0.0",
+  "type": "module",
+  "homepage": "https://github.com/mariohamann/music-memory",
+  "license": "MIT",
+  "author": "Mario Hamann",
+  "description": "A music memory game as web component",
+  "files": [
+    "music-memory.js"
+  ],
+  "keywords": [
+    "music",
+    "memory",
+    "game",
+    "web component"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariohamann/music-memory.git"
+  },
+  "main": "music-memory.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@11ty/is-land": "^4.0.0",
+    "@zachleat/snow-fall": "^1.0.2",
+    "vite": "^5.0.8"
+  }
+}

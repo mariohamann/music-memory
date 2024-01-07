@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>&lt;music-memory&gt; | Web Component</title>
+    <link rel="preconnect" href="https://fonts.bunny.net" />
+    <link
+      href="https://fonts.bunny.net/css?family=nunito:400,700|satisfy:400"
+      rel="stylesheet" />
+    <script type="module" src="music-memory.js"></script>
+    <script type="module">
+			import "@zachleat/snow-fall";
+			import "@11ty/is-land";
+		</script>
+  </head>
+  <body>
+    <snow-fall></snow-fall>
+    <main>
+      <h1>&lt;music-memory&gt;</h1>
+      <h2>How to play</h2>
+
+      <ol>
+        <li>Click on cards to hear different sections of songs.</li>
+        <li>Find and match pairs from the same song.</li>
+        <ol>
+          <li><b>Correct</b> pairs turn green and stay disabled.</li>
+          <li><b>Incorrect</b> pairs reset for another attempt.</li>
+        </ol>
+      </ol>
+
+      <p>Enjoy! ✨</p>
+      <is-land on:media="(prefers-reduced-motion: no-preference)">
+        <snow-fall></snow-fall>
+      </is-land>
+      <music-memory>
+        <audio
+          src="jingle-bells.mp3"
+          data-range1="0-4580"
+          data-range2="4580-9500"></audio>
+        <audio
+          src="joy-to-the-world.mp3"
+          data-range1="0-5300"
+          data-range2="5300-10000"></audio>
+        <audio
+          src="we-wish-you-a-merry-christmas.mp3"
+          data-range1="0-5950"
+          data-range2="5972-13000"></audio>
+      </music-memory>
+      <a href="https://github.com/mariohamann/music-memory">GitHub</a> |
+      <a href="https://mariohamann.com/">mariohamann.com</a>
+    </main>
+    <style>
+			/* Resets */
+			* {
+				padding-top: unset;
+				padding-bottom: unset;
+				margin: unset;
+			}
+
+			:root {
+				line-height: 1.5;
+				font-weight: 400;
+				font-size: 16px;
+
+				color-scheme: light dark;
+				color: rgba(255, 255, 255, 0.87);
+				background-color: #242424;
+
+				font-synthesis: none;
+				text-rendering: optimizeLegibility;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+			}
+
+			body {
+				font-family: "Nunito", sans-serif;
+				min-height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background: radial-gradient(
+					ellipse at bottom,
+					#1b2735 0%,
+					#090a0f 100%
+				);
+			}
+
+			main {
+				width: 80vw;
+				margin: auto;
+			}
+
+			@media screen and (min-width: 600px) {
+				main {
+					max-width: 600px;
+				}
+			}
+
+			/* Content */
+
+			h1 {
+				font-family: "Satisfy", handwriting;
+				font-size: 56px;
+			}
+
+			h2 {
+				margin-top: 20px;
+				margin-bottom: 16px;
+			}
+
+			p {
+				margin-top: 8px;
+			}
+
+			a {
+				color: white;
+				display: inline-block;
+				margin-top: 32px;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+				padding-bottom: 0px;
+				text-decoration: none;
+				transition: border-bottom 0.15s;
+			}
+
+			a:hover {
+				border-bottom: 1px solid rgba(255, 255, 255, 1);
+			}
+
+			/* Music Memory */
+
+			music-memory {
+				display: block;
+				z-index: 1;
+				text-align: center;
+				padding: 32px;
+				background: rgba(0, 0, 0, 0.5);
+				border: 1px solid rgba(0, 0, 0, 0.9);
+				margin-top: 36px;
+				border-radius: 8px;
+			}
+
+			button {
+				display: inline-block;
+				border-radius: 8px;
+				border: 1px solid transparent;
+				background-color: rgba(0, 0, 0, 0.8);
+				border: rgba(255, 255, 255, 0.5) solid 1px;
+				cursor: pointer;
+				transition: border-color 0.25s;
+				color: rgba(255, 255, 255, 0) !important;
+				font-size: 0.1px;
+				width: 72px;
+				height: 96px;
+				box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+				margin-right: 12px;
+				margin-top: 12px;
+			}
+
+			button:hover {
+				border-color: #5693da;
+			}
+
+			button:focus,
+			button:focus-visible {
+				outline: 4px auto -webkit-focus-ring-color;
+			}
+
+			button[disabled] {
+				opacity: 50%;
+			}
+
+			button.matched {
+				background-color: rgba(100, 255, 157, 0.4);
+			}
+		</style>
+  </body>
+</html>
