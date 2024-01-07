@@ -58,3 +58,4 @@ npm install music-memory
 3. To make styling easy, the component uses LightDOM, so you can style it with basic CSS.
 4. Button order is randomized on each component load (can be deactivated with `no-shuffle` attribute on the `<music-memory>` element).
 5. If there's a match, the audio is played from the beginning of range 1 until the end of range 2.
+6. Set attribute `debug` on the `<music-memory>` element to show the audio file + part in the button text.

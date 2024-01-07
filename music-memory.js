@@ -5,6 +5,7 @@ class MusicMemory extends HTMLElement {
     this.selectedRanges = [];
     this.currentButtons = [];
     this.noShuffle = this.hasAttribute('no-shuffle') || false;
+    this.debug = this.hasAttribute('debug') || false;
     this.audioElements = [];
     this.activeTimeout = null;
   }
@@ -20,7 +21,7 @@ class MusicMemory extends HTMLElement {
       this.audioElements.push(audio);
       ['range1', 'range2'].forEach(rangeKey => {
         const button = document.createElement('button');
-        button.textContent = `Play Part ${rangeKey === 'range1' ? '1' : '2'} of Audio ${index + 1}`;
+        button.textContent = this.debug ? `Play ${index + 1}.${rangeKey === 'range1' ? '1' : '2'}` : 'Play';
         button.addEventListener('click', () => this.handlePlay(audio, audio.dataset[rangeKey], button));
         buttons.push(button);
       });
@@ -33,7 +34,6 @@ class MusicMemory extends HTMLElement {
     buttons.forEach(button => this.appendChild(button));
   }
 
-  // Utility function
   shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -64,14 +64,14 @@ class MusicMemory extends HTMLElement {
     };
 
     const [start, end] = this.parseRange(rangeData);
-    audio.currentTime = 0; // Reset audio to start
-    audio.currentTime = start / 1000; // Set to the start of the range
+    audio.currentTime = 0;
+    audio.currentTime = start / 1000;
     audio.play();
 
     const playDuration = (end - start) / 1000;
     this.activeTimeout = setTimeout(() => {
       audio.pause();
-      audio.currentTime = 0; // Reset to start for next play
+      audio.currentTime = 0;
       if (this.currentButtons.length === 2) {
         this.currentButtons.forEach(button => button.disabled = false);
         this.currentButtons = [];
@@ -105,7 +105,7 @@ class MusicMemory extends HTMLElement {
 
     setTimeout(() => {
       audio.pause();
-      audio.currentTime = 0; // Reset to start for next play
+      audio.currentTime = 0;
     }, end);
 
   }
